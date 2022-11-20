@@ -1,0 +1,199 @@
+#Linux 运行jar ，后台进程运行jar 和结束后台正在运行的jar
+https://blog.csdn.net/PyFanL/article/details/73321694
+
+# linux安装redis
+https://www.cnblogs.com/lauhp/p/8487029.html
+
+# linux安装make(debain)
+apt install gcc                             //安装gcc
+apt install automake autoconf libtool make  //debain安装
+
+# windows开启远程连接
+redis.windows.conf
+redis.windows-service.conf
+这两个文件 #127.0.0.1（注释掉地址）
+同时 protected-mode no
+
+# windows 后台启动redis
+redis-server --service-install redis.windows.conf --loglevel verbose ( 安装redis服务 )
+redis-server --service-start ( 启动服务 )
+redis-server --service-stop （停止服务）
+
+# cmd 创建WIFI
+netsh wlan set hostednetwork mode=allow ssid=Test key=0123456789
+
+# linux配置jdk
+修改/etc/profile，加入JDK
+export JAVA_HOME=/usr/coallocal/jdk1.8.0_151
+export JRE_HOME=/usr/coallocal/jdk1.8.0_151/jre
+export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export PATH=$PATH:$JAVA_HOME/bin
+
+# 配置多个tomcat(修改同上文件，默认的不需配置)
+####tomcat-8080 
+TOMCAT_HOME_8080=/usr/coallocal/apache-tomcat-7.0.79-8080
+CATALINA_HOME_8080=/usr/coallocal/apache-tomcat-7.0.79-8080
+CATLINA_BASE_8080=/usr/coallocal/apache-tomcat-7.0.79-8080
+export TOMCAT_HOME_8080  CATALINA_HOME_8080  CATALINA_BASE_8080
+
+####tomcat-8081 
+TOMCAT_HOME_8081=/usr/coallocal/apache-tomcat-7.0.79-8081
+CATALINA_HOME_8081=/usr/coallocal/apache-tomcat-7.0.79-8081
+CATLINA_BASE_8081=/usr/coallocal/apache-tomcat-7.0.79-8081
+export TOMCAT_HOME_8081  CATALINA_HOME_8081  CATALINA_BASE_8081
+
+jdk授权
+chmod +x /usr/coallocal/jdk1.8.0_151/jre/bin/*
+chmod +x /usr/coallocal/jdk1.8.0_151/bin/*
+chmod +x /usr/coallocal/apache-tomcat-7.0.79/bin/*
+启用更新
+source /etc/profile
+
+# linux的mysql(CentenOS 6.5 rpm安装)
+`检查是否安装了mysql`
+rpm -qa | grep mysql
+mysql-libs-5.1.71-1.el6.x86_64
+
+`删除mysql`
+rpm -e --nodeps mysql-libs-5.1.71-1.el6.x86_64
+
+`下载mysql社区版 ：MySQL Community Downloads`
+mysql-8.0.12-1.el6.x86_64.rpm-bundle.tar
+
+`解压：`
+tar -zxvf mysql-8.0.12-1.el6.x86_64.rpm-bundle.tar
+tar -xvf mysql-8.0.12-1.el6.x86_64.rpm-bundle.tar
+
+`我们只需要依次安装需要的几个RPM包即可，安装之前需要卸载掉centos自带的mariadb-libs：`
+rpm -e --nodeps mariadb-libs
+
+`先安装这个`：yum install libaio -y
+yum  install    numactl -y
+yum install perl -y
+
+rpm -ivh mysql-community-common-8.0.12-1.el6.x86_64.rpm 
+rpm -ivh mysql-community-libs-8.0.12-1.el6.x86_64.rpm 
+rpm -ivh mysql-community-client-8.0.12-1.el6.x86_64.rpm 
+rpm -ivh mysql-community-server-8.0.12-1.el6.x86_64.rpm
+
+=================7-=========
+centos7 需要：yum install cyrus-sasl-lib -y
+libsasl2.so.2()(64bit) 被 mysql-community-server-8.0.12-1.el6.x86_64
+rpm -ivh mysql-community-server-8.0.12-1.el6.x86_64.rpm --force --nodeps
+==============7========
+
+mysql8.0对大小写敏感
+需要在 /etc/my.cnf下加配置
+lower_case_table_names =1
+
+`启动mysql服务：`
+service mysqld start或者/etc/init.d/mysqld start
+
+`开机启动：`
+chkconfig --add mysqld，查看开机启动设置是否成功chkconfig --list | grep mysql*
+mysqld            0:关闭    1:关闭    2:启用    3:启用    4:启用    5:启用    6:关闭
+
+`停止：`
+service mysqld stop
+
+---------------------第一次启动失败找密码
+[root@byrj mysqlrpm]# service mysqld start
+Initializing MySQL database:                               [FAILED]//失败了，所以下次再启动就没有初始化密码了
+[root@byrj mysqlrpm]# service mysqld start
+Starting mysqld:                                           [  OK  ]
+[root@byrj mysqlrpm]# grep 'temporary password' /var/log/mysqld.log
+[root@byrj mysqlrpm]# mysql -uroot -p
+Enter password: 
+
+`管理密码`
+mysql> ALTER USER user() IDENTIFIED   BY'hdmy@mysql2018';
+Query OK, 0 rows affected (0.16 sec) 
+
+`网络连接数据用密码`
+mysql> ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY'Hdmy@2018MM';
+ERROR 1396 (HY000): Operation ALTER USER failed for 'root'@'%'
+mysql> create USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY'Hdmy@2018MM';
+
+`授权`
+mysql> show grants for root@'%';
++----------------------------------+
+| Grants for root@%                |
++----------------------------------+
+| GRANT USAGE ON *.* TO `root`@`%` |
++----------------------------------+
+1 row in set (0.00 sec)
+没有权限啊，用下面授权
+mysql> GRANT ALL ON *.* TO 'root'@'%';
+Query OK, 0 rows affected (0.12 sec)
+mysql> flush privileges;
+
+mysql> show grants for root@'%';
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Grants for root@%                                                                                                                                                                                                                                                                                                                                                              |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, RELOAD, SHUTDOWN, PROCESS, FILE, REFERENCES, INDEX, ALTER, SHOW DATABASES, SUPER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, REPLICATION SLAVE, REPLICATION CLIENT, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, CREATE USER, EVENT, TRIGGER, CREATE TABLESPACE, CREATE ROLE, DROP ROLE ON *.* TO `root`@`%` |
+| GRANT BACKUP_ADMIN,BINLOG_ADMIN,CONNECTION_ADMIN,ENCRYPTION_KEY_ADMIN,GROUP_REPLICATION_ADMIN,PERSIST_RO_VARIABLES_ADMIN,REPLICATION_SLAVE_ADMIN,RESOURCE_GROUP_ADMIN,RESOURCE_GROUP_USER,ROLE_ADMIN,SET_USER_ID,SYSTEM_VARIABLES_ADMIN,XA_RECOVER_ADMIN ON *.* TO `root`@`%`                                                                                                  |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+# mysql 赋权 
+GRANT ALL ON *.* TO 'root'@'%';
+show grants for root@'%';
+
+# mysql 8.0 2059错误解决（可查看服务端防火墙问题）
+ALTER USER 'sa2'@'%' IDENTIFIED BY 'Jjbj@2019' PASSWORD EXPIRE NEVER; 
+
+ALTER USER 'sa2'@'%' IDENTIFIED WITH mysql_native_password BY 'Jjbj@2019';
+
+FLUSH PRIVILEGES;
+
+# 修改防火墙
+vi etc/sysConfig/iptables
+
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 8081 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 3306 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 8082 -j ACCEPT
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+
+# 添加默认启动项
+vi /etc/rc.d/rc.local
+
+touch /var/lock/subsys/local
+source /etc/profile
+/usr/coallocal/apache-tomcat-7.0.79/bin/startup.sh
+/usr/coallocal/apache-tomcat-7.0.79-8080/bin/startup.sh
+/usr/coallocal/apache-tomcat-7.0.79-8081/bin/startup.sh
+
+# 检查java进程
+ps -ef|grep java
+
+# 配置IP网络
+注意这里配置网卡口
+
+vi /etc/sysconfig/network-scripts/ifcfg-eth0
+
+TYPE=Ethernet
+BOOTPROTO=static
+ONBOOT=yes
+IPADDR=网址
+NETMASK=255.255.255.0
+GATEWAY=默认网关
+DNS1=DNS解析
+
+重启网络配置
+service network restart
+
+# windows查看端口
+netstat -ano |findstr "10009"
+taskkill -pid 23467 /f
+
+# 文档笔记
+http://note.youdao.com/noteshare?id=8f657e40e8f1ec07cf5881187b83decc&sub=C82478BD4DAE48CA80E1F03F6F180E28
+

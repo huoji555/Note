@@ -1,0 +1,157 @@
+# 2018.10.8
+1.国情假期结束
+2.政治视频
+3.专业课购买
+4.高数视频2个
+5.表格导出实例（前端导出要比后台导出省事）
+6.财务汇总表格导出，贴现票据表格导出，未贴现票据表格导出
+
+# 2018.10.9
+1.票据管理系统阶段性结束
+2.高数2节
+3.下拉小微贷系统，创建本地分支dev001
+4.政治刷题
+5.小微贷系统日志查询
+      ReversedLinesFileReader object = new ReversedLinesFileReader(file, 4096, "UTF-8");
+      while (counter <= Integer.parseInt(logVo.getRows())) {            //这个是恒小于的，一般就是用来读完这个文件
+          if (counter == Integer.parseInt(logVo.getRows())) {
+              break;                     //保证读完一次后就不再继续向下读了
+          }
+          datas.add(object.readLine());//读取下一行
+
+          counter++;
+      }
+      Collections.reverse(datas);
+
+
+# 2018.10.10
+1.不知道今天还会分配点什么任务
+2.政治2课，高数两节
+3.@sl4j在文件头加入之后，可以直接log.info("xxxx"),输出日志信息
+4.okhttp3用来请求第三方接口(比如说活体认证，短信服务)，之后接收一个第三方的返回值
+5.七牛云和宝塔的试用，不怎么会用
+6.HanLP,真是个好东西，可能有机会去研究如何形成适合自己的思维导图了
+7.明天继续写demo，试着做好这一块
+
+
+# 2018.10.11
+1.高数两节半
+2.HanLP探索
+3.发现的一个好网站（博客网站）
+http://www.hankcs.com/
+
+# 2018.10.12
+1.高数问题解答
+2.解决pom导入jar包注释乱码（调节源文件编码方式）
+3.目前的设想是根据所有图的关键词数据，做一个聚合处理k-means,由于是无监督式的，所以更加不好归纳了，目前先做测试demo，将所有文本迭代，
+  归类总结出五个关键词，然后就可以根据它的语义分类，在图谱实体类上再增加一个图谱类型MapType,根据MapType进行推荐
+4.同时在用户这块增加一个用户浏览数据表，用来存储用户平时的浏览习惯，存储相关的关键词和具体的大类
+5.根据用户的关键词和其中的大类，分别进行摘录关键词，做一个并集，
+
+# 2018.10.15
+1.一个周末过去了，思维导图重构一次
+2.跟着节奏来吧
+3.AOP部分增加记录异常的类，增加分页方法
+
+# 2018.10.16
+1.注册模块
+2.Mail服务
+3.高数一节
+4.Redis配置
+
+# 2018.10.17
+1.登录模块
+2.解决异常问题（问题出在lombok上，eclipse类ide未安装插件lombok，不能正常使用，添加set,get方法可正常使用）
+3.高数，英语
+4.数据结构资料
+5.登录注册模块，之后是后台管理模块搭建，然后放着，有时间一周就可以完成
+
+# 2018.10.18
+1.高数复习，问题解决
+2.数据结构
+3.emmm...后台界面搭建
+4.IDEA模板配置
+  *
+ * @auther: Ragty
+ * @describe: $describe$
+ * @param: $param$
+ * @return: $return$
+ * @date: $date$ 
+ */           同时还要开启那个Enter,默认是
+
+# 2018.10.19
+1.高数复习
+2.数据结构，计算机网络
+3.还有那个sql查询
+
+# 2018.10.21
+1.讲架构，讲AngularJs
+
+# 2018.10.22
+1.高数一讲
+2.数据结构，计算机网络
+3.发现下拉的问题，然后是逾期模块的sql语句
+4.清了缓存github居然出了问题
+  那个下拉框的错误，通过id和名字组合，进行查询
+  两个tr的情况就把它丢到tbody
+  还有就是没什么别的了
+
+# 2018.10.23
+1.把昨天的高数看完，英语抽空背了
+2.晚上地铁最好可看数据结构
+3.确认还款功能
+4.直播App调整
+
+# 2018.10.24
+1.首先，节日快乐
+2.高数一节
+3.数据结构，英语单词
+4.兼容IE浏览器，修改导出数据问题(以下为判别浏览器内核)
+   if (regs = userAgent.match(/MSIE\s(\d+)\..*/)) {
+    // ie 除11
+    data.browser = 'ie ' + regs['1'];
+  } else if (regs = userAgent.match(/FireFox\/(\d+)\..*/)) {
+    data.browser = 'firefox ' + regs['1'];
+  } else if (regs = userAgent.match(/Opera[\s|\/](\d+)\..*/)) {
+    data.browser = 'opera ' + regs['1'];
+  } else if (regs = userAgent.match(/Chrome\/(\d+)\..*/)) {
+    data.browser = 'chrome ' + regs['1'];
+  } else if (regs = userAgent.match(/Safari\/(\d+)\..*$/)) {
+    // chrome浏览器都声明了safari
+    data.browser = 'safari ' + regs['1'];
+  } else if (regs = userAgent.match(/rv:(\d+)\..*/)) {
+    // ie 11
+    data.browser = 'ie ' + regs['1'];
+  }
+  IE真是个***********浏览器
+  
+  # 2018.10.25
+  1.高数一节，英语
+  2.数据结构
+  3.查询模块思考
+  
+  # 2018.10.26
+  1.高数一节，英语(数据结构怎么觉得看不懂了呢)
+  2.思维导图后台系统搭建
+
+# 2018.10.29
+1.高数一节，英语bilibili
+2.异常模块分页显示，日期查询
+3.jpa分页条件查询
+  小动作都在PageReguest中
+  Sort sort = new Sort(Sort.Direction.DESC, "createdate")
+                   .and(new Sort(Sort.Direction.AES, "id"));
+  Pageable pageable = new PageRequest(1, 10, sort);
+  
+  # 2018.10.30
+  1.二重积分，数据结构，英语
+  2.昨日的查询语句，卡在了pageable上,是从0开始好吧，多久了还犯这种错误
+  3.数据结构（第一章）
+  4.MindMap用户信息查询
+ 
+ # 2018.10.31
+ 1.10月最后一天，这些日子过的很不舒服，迷茫，无知，又没有任何办法
+ 2.考研这个选择，我不知道它对不对，跟着做了，每天难受的要死，可是不想安逸下去
+ 3.以后还会有许多选择和这种迷茫的时刻,就硬着头向前走吧
+ 4.小微贷系统微信公众号退出接口，验证码失效，数据条数统计
+ 5.Mind Map 授权功能
